@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise for Jeni</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --love-pink: #ff4d6d;
+            --deep-red: #800f2f;
+            --bg: #fff0f3;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            font-family: 'Arial', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+
+        .card {
+            text-align: center;
+            padding: 30px;
+            width: 85%;
+            max-width: 400px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        /* Countdown Styles */
+        #countdown-timer {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--deep-red);
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+
+        /* Birthday Content (Hidden initially) */
+        #birthday-content { display: none; }
+
+        h1 { color: var(--love-pink); font-size: 2.2rem; margin-bottom: 10px; }
+        .heart { font-size: 60px; animation: pulse 1.5s infinite; cursor: pointer; }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        p { color: #444; line-height: 1.5; font-size: 1.1rem; }
+        .label { color: var(--love-pink); text-transform: uppercase; font-size: 0.8rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="main-card">
+        <div id="countdown-section">
+            <div class="heart">⏳</div>
+            <p>Counting down the seconds until it's officially...</p>
+            <h2 style="color: var(--love-pink);">Jeni's Day</h2>
+            <div id="countdown-timer">00:00:00</div>
+            <p class="label">Be ready, my love.</p>
+        </div>
+
+        <div id="birthday-content">
+            <div class="heart" onclick="pop()">❤️</div>
+            <h1>Happy Birthday, Jeni!</h1>
+            <p>I couldn't wait another second to tell you how much I love you.</p>
+            <p>You are my today and all of my tomorrows. Let's make this year unforgettable.</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="font-style: italic; color: var(--deep-red);">Forever Yours.</p>
+        </div>
+    </div>
+
+    <script>
+        // SET THE TARGET DATE: Midnight tonight (Start of today)
+        const targetDate = new Date();
+        targetDate.setHours(24, 0, 0, 0); // Sets to 12:00 AM of the next day
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown-timer").innerHTML = 
+                (hours < 10 ? "0" + hours : hours) + ":" + 
+                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                (seconds < 10 ? "0" + seconds : seconds);
+
+            if (distance < 0) {
+                clearInterval(interval);
+                showBirthday();
+            }
+        }
+
+        function showBirthday() {
+            document.getElementById("countdown-section").style.display = "none";
+            document.getElementById("birthday-content").style.display = "block";
+            document.body.style.backgroundColor = "#ffccd5";
+            pop(); // Trigger confetti
+        }
+
+        function pop() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ffffff', '#ff758f']
+            });
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Run immediately
+    </script>
+</body>
+</html>
